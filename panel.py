@@ -86,6 +86,44 @@ while (1):
     # fetching instructions into a class
     panelInst = Instructions(instructions)
 
+    # getting panel measures
+    # TODO: functions to get measures from panel instruments
+    #
+    # Temp function
+    process = subprocess.Popen(bashCommand[2].split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    # temperature = 0
+    temperature = int(output) / 1000
+
+    door_1, door_2, online = gpio.update_input()
+    # printing results
+    print("Door 1 :", door_1)
+    print("Door 2 :", door_2)
+    print("Les portes sont fermées" if door_1 and door_2 else "Au moins une porte est ouverte")
+    print("Power :", online)
+
+    # checking if anything goes wrong
+    if not (door_1 and door_2) or not (online) or (temperature >= 80):
+        bug = True
+    else:
+        bug = False
+    print("Bug :", bug)
+
+    # put request to panel state
+    putPANEL = db["panels"].find_one_and_update(
+        {"_id": ObjectId(panels[pi]['_id'])},
+        {"$set":
+             {'state': status,
+              'temperature': temperature,
+              'door_1': not door_1,
+              'door_2': not door_2,
+              'screen': online,
+              'bug': bug},
+         }, upsert=True
+    )
+
+
+
     # applying instructions
     if (panelInst.table[pi]['instruction'] != panels[pi]['state']) or bug:
         if panelInst.table[pi]['instruction']:
@@ -96,7 +134,15 @@ while (1):
             # print(output, error)
             # updating old status with new instructions
             status = True
-            PANEL = {"state": status}
+            PANEL = {"door_1": putPANEL['door_1'],
+                     "door_2": putPANEL['door_2'],
+                     "name": putPANEL['name'],
+                     "screen": putPANEL['screen'],
+                     "online": putPANEL['online'],
+                     "state": status,
+                     "temperature": putPANEL['temperature'],
+                     "index": putPANEL['index'],
+                     "date": datetime.datetime.utcnow()}
             postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
@@ -131,51 +177,7 @@ while (1):
 
     print("Status :", panels[pi]['state'])
 
-    # getting panel measures
-    # TODO: functions to get measures from panel instruments
-    #
-    # Temp function
-    process = subprocess.Popen(bashCommand[2].split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
-    # temperature = 0
-    temperature = int(output)/1000
 
-    door_1, door_2, online = gpio.update_input()
-    # printing results
-    print("Door 1 :", door_1)
-    print("Door 2 :", door_2)
-    print("Les portes sont fermées" if door_1 and door_2 else "Au moins une porte est ouverte")
-    print("Power :", online)
-
-    # checking if anything goes wrong
-    if not(door_1 and door_2) or not(online) or (temperature >= 80):
-        bug = True
-    else:
-        bug = False
-    print("Bug :", bug)
-    # put request to panel state
-    putPANEL = db["panels"].find_one_and_update(
-        {"_id": ObjectId(panels[pi]['_id'])},
-        {"$set":
-             {'state': status,
-              'temperature': temperature,
-              'door_1': not door_1,
-              'door_2': not door_2,
-              'screen': online,
-              'bug': bug},
-         }, upsert=True
-    )
-
-    # pushing instructions into logs
-    PANEL = {"door_1": putPANEL['door_1'],
-         "door_2": putPANEL['door_2'],
-         "name": putPANEL['name'],
-         "screen": putPANEL['screen'],
-         "online": putPANEL['online'],
-         "state": putPANEL['state'],
-         "temperature": putPANEL['temperature'],
-         "index": putPANEL['index'],
-         "date": datetime.datetime.utcnow()}
 
     # if bug:
     # postPANEL = panelLogs.insert_one(PANEL).inserted_id
