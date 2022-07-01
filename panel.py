@@ -96,6 +96,7 @@ while (1):
             # print(output, error)
             # updating old status with new instructions
             status = True
+            PANEL = {"state": status}
             postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
@@ -114,6 +115,7 @@ while (1):
             # print(output, error)
             # updating old status with new instructions
             status = False
+            PANEL = {"state": status}
             postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
