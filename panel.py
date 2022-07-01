@@ -175,7 +175,7 @@ while (1):
          "index": putPANEL['index'],
          "date": datetime.datetime.utcnow()}
 
-    if bug:
-        postPANEL = panelLogs.insert_one(PANEL).inserted_id
+    # if bug:
+    # postPANEL = panelLogs.insert_one(PANEL).inserted_id
     # wait time before update
     sleep(time_before_update)
