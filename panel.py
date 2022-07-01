@@ -176,6 +176,5 @@ while (1):
 
     if bug:
         postPANEL = panelLogs.insert_one(PANEL).inserted_id
-        sleep(5)
     # wait time before update
     sleep(time_before_update)
