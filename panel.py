@@ -54,6 +54,7 @@ PANEL = {"isOpen": False,
 
 hasBeenDisconnected = False
 bug = False
+status = False
 
 while (1):
 
