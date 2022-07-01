@@ -53,6 +53,7 @@ PANEL = {"isOpen": False,
          "date": datetime.datetime.utcnow()}
 
 hasBeenDisconnected = False
+bug = False
 
 while (1):
 
@@ -86,7 +87,7 @@ while (1):
     panelInst = Instructions(instructions)
 
     # applying instructions
-    if panelInst.table[pi]['instruction'] != panels[pi]['state']:
+    if (panelInst.table[pi]['instruction'] != panels[pi]['state']) or bug:
         if panelInst.table[pi]['instruction']:
             # script on
             print('### HDMI PORT ENABLED ###')
