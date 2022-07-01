@@ -162,7 +162,15 @@ while (1):
             # print(output, error)
             # updating old status with new instructions
             status = False
-            PANEL = {"state": status}
+            PANEL = {"door_1": putPANEL['door_1'],
+                     "door_2": putPANEL['door_2'],
+                     "name": putPANEL['name'],
+                     "screen": putPANEL['screen'],
+                     "online": putPANEL['online'],
+                     "state": status,
+                     "temperature": putPANEL['temperature'],
+                     "index": putPANEL['index'],
+                     "date": datetime.datetime.utcnow()}
             postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
