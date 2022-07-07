@@ -25,9 +25,11 @@ time_before_update = 1
 
 # TODO: replace with host VPN IP adress and Mongodb port when on RP
 client = MongoClient(add)
+print("connected to MongoDB")
 
 # database connexion
 db = client.portNS
+print('Connected to Database portNS')
 # db.authentificate = (user, password)
 
 oldInstruction = ""
@@ -78,9 +80,18 @@ while (1):
 
 
     # collection fetching
+    print("fetching panel Logs")
     panelLogs = db.panellogs
+    print("success !")
+
+    print("fetching instruction")
     instructions = db.instructions.find()
+    print("success !")
+
+    print("fetching panels")
     panels = db.panels.find()
+    print("success !")
+
 
     # fetching instructions into a class
     panelInst = Instructions(instructions)
