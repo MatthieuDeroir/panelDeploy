@@ -95,6 +95,7 @@ while (1):
 
     # fetching instructions into a class
     panelInst = Instructions(instructions)
+    print("instructions fetched")
 
     # getting panel measures
     # TODO: functions to get measures from panel instruments
@@ -102,6 +103,7 @@ while (1):
     # Temp function
     process = subprocess.Popen(bashCommand[2].split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
+    print("temperature fetched")
     # temperature = 0
     temperature = int(output) / 1000
 
@@ -120,6 +122,7 @@ while (1):
     print("Bug :", bug)
 
     # put request to panel state
+    print('put request to panels collection')
     putPANEL = db["panels"].find_one_and_update(
         {"_id": ObjectId(panels[pi]['_id'])},
         {"$set":
@@ -131,6 +134,7 @@ while (1):
               'bug': bug},
          }, upsert=True
     )
+    print('put request successful')
 
 
 
