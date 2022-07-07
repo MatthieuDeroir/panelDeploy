@@ -66,8 +66,8 @@ while (1):
             hasBeenDisconnected = False
 
     # collection fetching
-    instructions = req("get", 'http://' + config['ip'] + str(config['port']) + '/instructions')
-    panels = req("get", 'http://' + config['ip'] + str(config['port']) + '/panels')
+    instructions = req("get", 'http://' + config['ip'] + ":" + str(config['port']) + '/instructions')
+    panels = req("get", 'http://' + config['ip'] + ":" + str(config['port']) + '/panels')
     # fetching instructions into a class
     panelInst = Instructions(instructions.json())
 
@@ -105,7 +105,7 @@ while (1):
             'name': panels.json()[pi]['name']
             },
 
-    put = req("put", 'http://' + config['ip'] + str(config['port']) + '/panel/' +
+    put = req("put", 'http://' + config['ip'] + ":" + str(config['port']) + '/panel/' +
               panels.json()[pi]['_id'], data, headers)
 
 
@@ -130,7 +130,7 @@ while (1):
                     "date": str(datetime.now()),
                     "name": panels.json()[pi]['name']
                     },
-            post = req("post", 'http://' + config['ip'] + str(config['port']) + '/panelLogs', json.dumps(data),
+            post = req("post", 'http://' + config['ip'] + ":" + str(config['port']) + '/panelLogs', json.dumps(data),
                        headers)
             # changing LED states
             gpio.change_output(status)
@@ -154,7 +154,7 @@ while (1):
                     "date": str(datetime.now()),
                     "name": panels.json()[pi]['name']
                     },
-            post = req("post", 'http://' + config['ip'] + str(config['port']) + '/panelLogs', json.dumps(data),
+            post = req("post", 'http://' + config['ip'] + ":" + str(config['port']) + '/panelLogs', json.dumps(data),
                        headers)
 
             # changing LED states
