@@ -47,11 +47,11 @@ headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
 while (1):
 
     # to handle disconnection with server
-    resp = ping(config.ip)
+    resp = ping(config['ip'])
     print(resp)
 
     while resp:
-        resp = ping(config.ip)
+        resp = ping(config['ip'])
         if resp and not hasBeenDisconnected:
             print('### DISCONNECTED FROM SERVER ###')
             print('### DISABLING HDMI ###')
