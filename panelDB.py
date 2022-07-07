@@ -82,14 +82,17 @@ while (1):
     # collection fetching
     print("fetching panel Logs")
     panelLogs = db.panellogs
+    print(panelLogs)
     print("success !")
 
     print("fetching instruction")
     instructions = db.instructions.find()
+    print(instructions)
     print("success !")
 
     print("fetching panels")
     panels = db.panels.find()
+    print(panels)
     print("success !")
 
 
