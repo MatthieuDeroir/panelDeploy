@@ -12,8 +12,8 @@ from ping import ping
 
 user = 'root'
 password = 'root'
-ip = '192.167.100.105'
-add = 'mongodb://192.167.100.105:27017/'
+ip = '192.168.100.77'
+add = 'mongodb://192.168.100.77:27017/'
 port = 27017
 
 # panel index
@@ -57,22 +57,22 @@ status = False
 while (1):
 
     # to handle disconnection with server
-    resp = ping("192.167.100.105")
+    resp = ping("192.168.100.77")
     while resp:
-        resp = ping("192.167.100.105")
+        resp = ping("192.168.100.77")
         print(resp)
 
         if resp and not hasBeenDisconnected:
             print('### DISCONNECTED FROM SERVER ###')
             print('### DISABLING HDMI ###')
-            # process = subprocess.Popen(bashCommand[0].split(), stdout=subprocess.PIPE)
-            # output, error = process.communicate()
+            process = subprocess.Popen(bashCommand[0].split(), stdout=subprocess.PIPE)
+            output, error = process.communicate()
             hasBeenDisconnected = True
         elif not resp and hasBeenDisconnected:
             print('### RECONNECTED TO SERVER ###')
             print('### ENABLING HDMI ###')
-            # process = subprocess.Popen(bashCommand[1].split(), stdout=subprocess.PIPE)
-            # output, error = process.communicate()
+            process = subprocess.Popen(bashCommand[1].split(), stdout=subprocess.PIPE)
+            output, error = process.communicate()
             hasBeenDisconnected = False
 
 
