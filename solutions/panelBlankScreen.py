@@ -38,7 +38,7 @@ print("Python app running\n"
       "Connected to MongoDB\nIP : " + ip + " \nPort : " + str(port))
 
 # init bash command for hdmi control
-bashCommand = ["xrandr --output HDMI-1 --off", "xrandr --output HDMI-1 --on",
+bashCommand = ["xset -display :0 dpms force off", "xset -display :0 dpms force on",
                "cat /sys/class/thermal/thermal_zone0/temp"]
 #bashCommand = ["ls", "ls", "ls"]
 
