@@ -63,9 +63,9 @@ status = False
 while (1):
 
     # to handle disconnection with server
-    resp = ping("192.168.100.77")
+    resp = ping("192.168.100.76")
     while resp:
-        resp = ping("192.168.100.77")
+        resp = ping("192.168.100.76")
         print(resp)
         if resp and not hasBeenDisconnected:
             print('### DISCONNECTED FROM SERVER ###')
@@ -83,10 +83,8 @@ while (1):
 
 
     # collection fetching
-    print("fetching panel Logs")
     panelLogs = db.panellogs
     print(panelLogs)
-    print("success !")
 
     print("fetching instruction")
     instructions = db.instructions.find()
