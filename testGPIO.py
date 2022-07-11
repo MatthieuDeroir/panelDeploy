@@ -7,7 +7,7 @@ GPIO.setmode(GPIO.BCM)
 # GPIO's indexes
 door_1_index = 2
 door_2_index = 3
-power_index = 4
+power_index = 22
 led_1_index = 17
 led_2_index = 27
 

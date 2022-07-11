@@ -39,8 +39,12 @@ print("Python app running\n"
 
 # init bash command for hdmi control
 bashCommand = ["xset -display :0 dpms force off", "xset -display :0 dpms force on",
-               "cat /sys/class/thermal/thermal_zone0/temp"]
+               "cat /sys/class/thermal/thermal_zone0/temp", "fbi -T 1 panel-r.png"]
 #bashCommand = ["ls", "ls", "ls"]
+
+#display img
+process = subprocess.Popen(bashCommand[3].split(), stdout=subprocess.PIPE)
+output, error = process.communicate()
 
 # initialisation du PANEL pour post
 PANEL = {"isOpen": False,
