@@ -8,7 +8,6 @@ import gpio
 from config import ip, port, add, pi, time_before_update
 from ping import ping
 
-
 # TODO: replace with host VPN IP adress and Mongodb port when on RP
 client = MongoClient(add)
 print("connected to MongoDB")
@@ -26,7 +25,7 @@ print("Python app running\n"
 # init bash command for hdmi control
 bashCommand = ["xset -display :0 dpms force off", "xset -display :0 dpms force on",
                "cat /sys/class/thermal/thermal_zone0/temp"]
-#bashCommand = ["ls", "ls", "ls"]
+# bashCommand = ["ls", "ls", "ls"]
 
 
 # initialisation du PANEL pour post
@@ -63,15 +62,12 @@ while (1):
             output, error = process.communicate()
             hasBeenDisconnected = False
 
-
-
     # collection fetching
     panelLogs, instructions, panels = db.panellogs, Instructions(db.instructions.find()), db.panels.find()
-    
+
     print(panelLogs)
     print(instructions)
     print(panels)
-
 
     # fetching instructions into a class
     # getting panel measures
@@ -89,32 +85,29 @@ while (1):
     print("Door 2 :", door_2)
     print("Power :", online)
 
-
     # checking if anything goes wrong
     if not (door_1 and door_2) or not (online) or (temperature >= 80):
         bug = True
     else:
         bug = False
 
-
     print("Bug :", bug)
 
     # put request to panel state
-    print('put request to panels collection')
-    putPANEL = db["panels"].find_one_and_update(
-        {"_id": ObjectId(panels[pi]['_id'])},
-        {"$set":
-             {'state': status,
-              'temperature': temperature,
-              'door_1': not door_1,
-              'door_2': not door_2,
-              'screen': online,
-              'bug': bug},
-         }, upsert=True
-    )
-    print('put request successful')
-
-
+    if not ping(ip):
+        print('put request to panels collection')
+        putPANEL = db["panels"].find_one_and_update(
+            {"_id": ObjectId(panels[pi]['_id'])},
+            {"$set":
+                 {'state': status,
+                  'temperature': temperature,
+                  'door_1': not door_1,
+                  'door_2': not door_2,
+                  'screen': online,
+                  'bug': bug},
+             }, upsert=True
+        )
+        print('put request successful')
 
     # applying instructions
     if (instructions.table[pi]['instruction'] != panels[pi]['state']) or bug:
@@ -176,8 +169,6 @@ while (1):
         status = panels[pi]['state']
 
     print("Status :", panels[pi]['state'])
-
-
 
     # if bug:
     # postPANEL = panelLogs.insert_one(PANEL).inserted_id
