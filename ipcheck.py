@@ -2,11 +2,10 @@ from ping import ping
 from time import sleep
 from pymongo import MongoClient
 from bson import ObjectId
-from config import ipIndret, ipAval, ipAmont
+from config import ipIndret, ipAval, ipAmont, add
 
 
-sleep_time = 10
-add = 'mongodb://192.167.100.105:27017/'
+sleep_time = 1
 client = MongoClient(add)
 # database connexion
 db = client.portNS
