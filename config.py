@@ -23,3 +23,9 @@ indexes = {
     'led_1': 17,
     'led_2': 27
 }
+
+# Server side IP check config
+ipIndret = '192.168.100.150'
+ipAval = '192.168.100.151'
+ipAmont = '192.168.100.152'
+

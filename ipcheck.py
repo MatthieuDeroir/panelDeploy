@@ -2,6 +2,7 @@ from ping import ping
 from time import sleep
 from pymongo import MongoClient
 from bson import ObjectId
+from config import ipIndret, ipAval, ipAmont
 
 
 sleep_time = 10
@@ -15,9 +16,9 @@ online = [True, True, True]
 while (1):
     panels = db.panels.find()
 
-    isIndretOnline = ping("192.167.100.123")
-    isAvalOnline = ping("192.167.100.123")
-    isAmontOnline = ping("192.167.100.123")
+    isIndretOnline = ping(ipIndret)
+    isAvalOnline = ping(ipAval)
+    isAmontOnline = ping(ipAmont)
 
     print(isIndretOnline)
     print(isAvalOnline)

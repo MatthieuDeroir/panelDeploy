@@ -66,7 +66,7 @@ while (1):
 
 
     # collection fetching
-    panelLogs, instructions, panels = db.panellogs.find(), Instructions(db.instructions.find()), db.panels.find()
+    panelLogs, instructions, panels = db.panellogs, Instructions(db.instructions.find()), db.panels.find()
     
     print(panelLogs)
     print(instructions)
