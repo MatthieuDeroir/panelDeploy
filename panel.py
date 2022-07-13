@@ -41,8 +41,11 @@ PANEL = {"isOpen": False,
 hasBeenDisconnected = False
 bug = False
 status = False
+bug_count = 0
 
 while (1):
+    if bug_count > 0:
+        bug_count -= 1
     now = datetime.datetime.now()
     current_time = now.strftime("%H:%M:%S")
 
@@ -90,7 +93,6 @@ while (1):
     else:
         bug = False
 
-    print("Bug :", bug)
 
     # put request to panel state
     if not ping(ip):
@@ -110,7 +112,7 @@ while (1):
         print('put request successful')
 
     # applying instructions
-    if (instructions.table[pi]['instruction'] != panels[pi]['state']) or bug:
+    if (instructions.table[pi]['instruction'] != panels[pi]['state']):
         if instructions.table[pi]['instruction']:
             # script on
             print('### HDMI PORT ENABLED ###')
@@ -173,4 +175,17 @@ while (1):
     # if bug:
     # postPANEL = panelLogs.insert_one(PANEL).inserted_id
     # wait time before update
-    sleep(time_before_update)
+    if not bug:
+        sleep(time_before_update)
+    elif bug and bug_count is 0:
+        bug_count = 60
+        PANEL = {"door_1": putPANEL['door_1'],
+                 "door_2": putPANEL['door_2'],
+                 "name": putPANEL['name'],
+                 "screen": putPANEL['screen'],
+                 "online": putPANEL['online'],
+                 "state": status,
+                 "temperature": putPANEL['temperature'],
+                 "index": putPANEL['index'],
+                 "date": datetime.datetime.utcnow()}
+
