@@ -43,6 +43,8 @@ bug = False
 status = False
 
 while (1):
+    now = datetime.datetime.now()
+    current_time = now.strftime("%H:%M:%S")
 
     # to handle disconnection with server
     resp = ping(ip)
@@ -104,7 +106,8 @@ while (1):
                   'door_1': not door_1,
                   'door_2': not door_2,
                   'screen': online,
-                  'bug': bug},
+                  'bug': bug,
+                  'date': current_time},
              }, upsert=True
         )
         print('put request successful')
