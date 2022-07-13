@@ -24,7 +24,6 @@ def update_input():
 def change_output(state):
     if state:
         led_1 = GPIO.output(indexes['led_1'], GPIO.LOW)
-        sleep(1)
         led_2 = GPIO.output(indexes['led_2'], GPIO.LOW)
         state_1 = GPIO.gpio_function(indexes['led_1'])
         state_2 = GPIO.gpio_function(indexes['led_2'])
@@ -32,7 +31,6 @@ def change_output(state):
         print("LED 2 :", led_2, state_2)
     else:
         led_1 = GPIO.output(indexes['led_1'], GPIO.HIGH)
-        sleep(1)
         led_2 = GPIO.output(indexes['led_2'], GPIO.HIGH)
         state_1 = GPIO.gpio_function(indexes['led_1'])
         state_2 = GPIO.gpio_function(indexes['led_2'])
