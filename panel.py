@@ -59,9 +59,6 @@ while (1):
             hasBeenDisconnected = True
         elif not resp and hasBeenDisconnected:
             print('### RECONNECTED TO SERVER ###')
-            print('### ENABLING SCREEN DISPLAY ###')
-            process = subprocess.Popen(bashCommand[1].split(), stdout=subprocess.PIPE)
-            output, error = process.communicate()
             hasBeenDisconnected = False
 
     # collection fetching
