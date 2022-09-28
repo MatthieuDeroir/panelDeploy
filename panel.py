@@ -88,7 +88,7 @@ while (1):
     print("Power :", online)
 
     # checking if anything goes wrong
-    if not (door_1 and door_2) or not (online) or (temperature >= 80):
+    if not (online) or (temperature >= 80):
         bug = True
     else:
         bug = False
