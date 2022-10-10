@@ -18,7 +18,7 @@ backend_port = 4000
 add = 'mongodb://' + ip + ':' + str(port) + '/'
 
 # Loop refresh rate
-time_before_update = 1
+time_before_update = 10
 
 # Time before port check timeout
 timeout = '5'
