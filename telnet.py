@@ -7,11 +7,11 @@ from config import port, backend_port, ip, frontend_port, timeout
 def telnet():
     # telnet command to test different ports used by the server
     # grep -c return value greater than 0 if successful
-    bdd = "{ echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(port) + " | " \
+    bdd = "{echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(port) + " | " \
                                                                                             "(set -o pipefail && tee -a log.txt) | grep -c Connected"
-    frontend = "{ echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(frontend_port) + "| " \
+    frontend = "{echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(frontend_port) + " | " \
                                                                                                           "(set -o pipefail && tee -a log.txt) | grep -c Connected"
-    backend = "{ echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(backend_port) + "| " \
+    backend = "{echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(backend_port) + " | " \
                                                                                                         "(set -o pipefail && tee -a log.txt) | grep -c Connected"
 
     rbdd = subprocess.Popen(bdd.split(), stdout=subprocess.PIPE)
