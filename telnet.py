@@ -6,11 +6,11 @@ def telnet():
     # telnet command to test different ports used by the server
     # grep -c return value greater than 0 if successful
     bdd = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(port) + " | " \
-                                                                                            "(bash set +o pipefail && tee -a log.txt) | grep -c Connected"
+                                                                                            "(set -o pipefail && tee -a log.txt) | grep -c Connected"
     frontend = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(frontend_port) + "| " \
-                                                                                                          "(bash set +o pipefail && tee -a log.txt) | grep -c Connected"
+                                                                                                          "(set -o pipefail && tee -a log.txt) | grep -c Connected"
     backend = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(backend_port) + "| " \
-                                                                                                        "(bash set +o pipefail && tee -a log.txt) | grep -c Connected"
+                                                                                                        "(set -o pipefail && tee -a log.txt) | grep -c Connected"
 
     # return subprocess.call(bdd), subprocess.call(frontend), subprocess.call(backend)\
     # replace os.system by subprocess.call on linux

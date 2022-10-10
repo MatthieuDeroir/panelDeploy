@@ -62,6 +62,8 @@ while (1):
     ping_value = ping(ip)
     telnet_value = telnet()
     while ping_value or not telnet_value:
+        ping_value = ping(ip)
+        telnet_value = telnet()
         print(ping_value)
         if (ping_value or not telnet_value) and not hasBeenDisconnected:
             print('### DISCONNECTED FROM SERVER ###')
@@ -78,8 +80,7 @@ while (1):
                                                                          {"$set":
                                                                               {'instruction': False}
                                                                           })
-        ping_value = ping(ip)
-        telnet_value = telnet()
+
 
     # collection fetching
     panelLogs, instructions, panels = db.panellogs, Instructions(db.instructions.find()), db.panels.find()
