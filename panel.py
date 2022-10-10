@@ -62,9 +62,9 @@ while (1):
             print('put request successful')
         elif not (ping_value and telnet_value) and hasBeenDisconnected:
             print('### RECONNECTED TO SERVER ###')
-            panelLogs, instructions, panels = db.panellogs, Instructions(db.instructions.find()), db.panels.find()
+            inst = db.instructions.find()
             hasBeenDisconnected = False
-            updatedInstructions = db.instructions.find_one_and_update({"_id": ObjectId(db.instructions[pi]["_id"])},
+            updatedInstructions = db.instructions.find_one_and_update({"_id": ObjectId(inst[pi]["_id"])},
                                                                          {"$set":
                                                                               {'instruction': False}
                                                                           })
