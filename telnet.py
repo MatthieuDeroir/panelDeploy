@@ -6,19 +6,19 @@ def telnet():
     # telnet command to test different ports used by the server
     # grep -c return value greater than 0 if successful
     bdd = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(port) + " | " \
-                                                                                            "(set -o pipefail && tee -a log.txt) | grep -c Connected"
-    frontend = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(frontend_port) + "| " \
-                                                                                                          "(set -o pipefail && tee -a log.txt) | grep -c Connected"
-    backend = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(backend_port) + "| " \
-                                                                                                        "(set -o pipefail && tee -a log.txt) | grep -c Connected"
+                                                                                            "(set -o pipefail && tee -a log.txt)"
+    frontend = shebang + " timeout --signal=9 " + timeout + " telnet " + ip + " " + str(frontend_port) + " | " \
+                                                                                                          "(set -o pipefail && tee -a log.txt)"
+    backend = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(backend_port) + " | " \
+                                                                                                        "(set -o pipefail && tee -a log.txt)"
 
     # return subprocess.call(bdd), subprocess.call(frontend), subprocess.call(backend)\
     # replace os.system by subprocess.call on linux
     rbdd = os.system(bdd)
-
+    print("bdd:", bdd)
     # reverse up and down value on linux
-    up_value = 0
-    down_value = 1
+    up_value = 1
+    down_value = 0
 
     if rbdd is up_value:
         print("Database return value : " + str(rbdd))
@@ -33,6 +33,7 @@ def telnet():
         print("Database port is not responding. MongoDB is probably DOWN !")
 
     rfrontend = os.system(frontend)
+    print('fontend:', frontend)
 
     if rfrontend is up_value:
         print("Frontend return value : " + str(rfrontend))
@@ -47,6 +48,8 @@ def telnet():
         print("Frontend port is not responding. Frontend is probably DOWN !")
 
     rbackend = os.system(backend)
+    print('fontend:', backend)
+
 
     if rbackend is up_value:
         print("Backend return value : " + str(rbackend))
@@ -65,3 +68,5 @@ def telnet():
 
     # if any of the return value is 1 meaning there is an error somewhere it returns 1
     return error
+
+telnet()

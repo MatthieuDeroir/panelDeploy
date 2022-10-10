@@ -1,27 +1,27 @@
 import subprocess, os
-from config import port, backend_port, frontend_port, shebang
+from config import port, backend_port, frontend_port, ip
 
-ip = 'localhost'
+
 timeout = '5'
 
 
 def telnet():
     # telnet command to test different ports used by the server
     # grep -c return value greater than 0 if successful
-    bdd = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(port) + " | " \
-                                                                                            "(bash set +o pipefail && tee -a log.txt) | grep -c Connected"
-    frontend = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(frontend_port) + "| " \
-                                                                                                          "(bash set +o pipefail && tee -a log.txt) | grep -c Connected"
-    backend = shebang + " { echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(backend_port) + "| " \
-                                                                                                        "(bash set +o pipefail && tee -a log.txt) | grep -c Connected"
+    bdd = "{ echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(port) + " | " \
+                                                                                            "(set -o pipefail && tee -a log.txt) | grep -c Connected"
+    frontend = "{ echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(frontend_port) + "| " \
+                                                                                                          "(set -o pipefail && tee -a log.txt) | grep -c Connected"
+    backend = "{ echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(backend_port) + "| " \
+                                                                                                        "(set -o pipefail && tee -a log.txt) | grep -c Connected"
 
     # return subprocess.call(bdd), subprocess.call(frontend), subprocess.call(backend)\
     # replace os.system by subprocess.call on linux
     rbdd = os.system(bdd)
 
     # reverse up and down value on linux
-    up_value = 1
-    down_value = 0
+    up_value = 0
+    down_value = 1
 
     if rbdd is up_value:
         print("Database return value : " + str(rbdd))
@@ -63,11 +63,11 @@ def telnet():
         print("Backend return value : " + str(rbackend))
         print("Backend port is not responding. Backend is probably DOWN !")
 
-    error = not (rbdd or rfrontend or rbackend)
+    error = rbdd or rfrontend or rbackend
     print(error)
 
     # if any of the return value is 1 meaning there is an error somewhere it returns 1
     return error
 
 
-
+telnet()
