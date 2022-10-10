@@ -64,7 +64,7 @@ while (1):
             print('### RECONNECTED TO SERVER ###')
             panelLogs, instructions, panels = db.panellogs, Instructions(db.instructions.find()), db.panels.find()
             hasBeenDisconnected = False
-            updatedInstructions = db.instructions.find_one_and_update({"_id": ObjectId(instructions.table[pi]["_id"])},
+            updatedInstructions = db.instructions.find_one_and_update({"_id": ObjectId(db.instructions[pi]["_id"])},
                                                                          {"$set":
                                                                               {'instruction': False}
                                                                           })
