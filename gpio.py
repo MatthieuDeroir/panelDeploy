@@ -9,7 +9,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(indexes['door_1'], GPIO.IN)
 GPIO.setup(indexes['door_2'], GPIO.IN)
 GPIO.setup(indexes['screen'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(indexes['button'], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(indexes['button'], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(indexes['led_1'], GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(indexes['led_2'], GPIO.OUT, initial=GPIO.HIGH)
 
