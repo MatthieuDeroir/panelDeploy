@@ -1,7 +1,7 @@
 import subprocess, os
 from config import port, backend_port, frontend_port, ip, shebang
 
-timeout = '5'
+timeout = '1'
 
 
 def telnet():
@@ -65,10 +65,12 @@ def telnet():
         print("Backend port is not responding. Backend is probably DOWN !")
 
     error = rbdd or rfrontend or rbackend
+    if error == 256:
+        error = 0
     print(error)
 
     # if any of the return value is 1 meaning there is an error somewhere it returns 1
-    return error
+    return not error
 
 
 telnet()
