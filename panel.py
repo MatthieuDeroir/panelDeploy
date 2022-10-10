@@ -51,16 +51,16 @@ while (1):
     # to handle disconnection with server
     ping_value = ping(ip)
     telnet_value = telnet()
-    while ping_value or telnet_value:
+    while ping_value or not telnet_value:
         print(ping_value)
-        if (ping_value or telnet_value) and not hasBeenDisconnected:
+        if (ping_value or not telnet_value) and not hasBeenDisconnected:
             print('### DISCONNECTED FROM SERVER ###')
             print('### DISABLING SCREEN DISPLAY ###')
             process = subprocess.Popen(bashCommand[0].split(), stdout=subprocess.PIPE)
             output, error = process.communicate()
             hasBeenDisconnected = True
             print('put request successful')
-        elif not (ping_value and telnet_value) and hasBeenDisconnected:
+        elif not (ping_value and not telnet_value) and hasBeenDisconnected:
             print('### RECONNECTED TO SERVER ###')
             inst = db.instructions.find()
             hasBeenDisconnected = False
