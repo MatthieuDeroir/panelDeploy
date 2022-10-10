@@ -20,8 +20,8 @@ def telnet():
     rbdd = os.system(bdd)
 
     # reverse up and down value on linux
-    up_value = 0
-    down_value = 1
+    up_value = 1
+    down_value = 0
 
     if rbdd is up_value:
         print("Database return value : " + str(rbdd))
