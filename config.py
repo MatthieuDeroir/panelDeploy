@@ -50,3 +50,6 @@ ipAmont = '10.190.61.21'
 panelAmont = '10.190.61.20'
 routerAmont = '10.190.61.9'
 
+#! SHEBANG
+shebang = "#!/bin/bash"
+
