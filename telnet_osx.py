@@ -66,7 +66,7 @@ def telnet():
 
     error = rbdd or rfrontend or rbackend
     if error == 256:
-        error = 0
+        error = 1
     print(error)
 
     # if any of the return value is 1 meaning there is an error somewhere it returns 1
