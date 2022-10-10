@@ -37,6 +37,15 @@ PANEL = {"isOpen": False,
          "index": 0,
          "date": datetime.datetime.utcnow()}
 
+putPANEL = {"isOpen": False,
+         "name": "Init",
+         "screen": True,
+         "online": False,
+         "state": False,
+         "temperature": 0,
+         "index": 0,
+         "date": datetime.datetime.utcnow()}
+
 hasBeenDisconnected = False
 bug = False
 status = False
