@@ -107,7 +107,7 @@ while (1):
         bug = False
 
     # put request to panel state
-    if not (ping(ip) or not telnet()):
+    if ping_value or not telnet_value:
         print('put request to panels collection')
         putPANEL = db["panels"].find_one_and_update(
             {"_id": ObjectId(panels[pi]['_id'])},
@@ -142,7 +142,7 @@ while (1):
                      "temperature": putPANEL['temperature'],
                      "index": putPANEL['index'],
                      "date": datetime.datetime.utcnow()}
-            if not (ping(ip) or not telnet()):
+            if ping_value or not telnet_value:
                 postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
@@ -170,7 +170,7 @@ while (1):
                      "temperature": putPANEL['temperature'],
                      "index": putPANEL['index'],
                      "date": datetime.datetime.utcnow()}
-            if not (ping(ip) or not telnet()):
+            if ping_value or not telnet_value:
                 postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
