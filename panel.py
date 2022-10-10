@@ -37,7 +37,8 @@ PANEL = {"isOpen": False,
          "index": 0,
          "date": datetime.datetime.utcnow()}
 
-putPANEL = {"isOpen": False,
+putPANEL = {"door_1": False,
+            "door_2": False,
          "name": "Init",
          "screen": True,
          "online": False,
