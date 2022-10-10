@@ -7,7 +7,7 @@ import subprocess
 import gpio
 from config import ip, port, add, pi, time_before_update
 from ping import ping
-from telnet import telnet
+from telnet_osx import telnet
 
 # TODO: replace with host VPN IP adress and Mongodb port when on RP
 client = MongoClient(add)
