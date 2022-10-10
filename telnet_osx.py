@@ -63,7 +63,7 @@ def telnet():
         print("Backend return value : " + str(rbackend))
         print("Backend port is not responding. Backend is probably DOWN !")
 
-    error = rbdd or rfrontend or rbackend
+    error = not (rbdd or rfrontend or rbackend)
     print(error)
 
     # if any of the return value is 1 meaning there is an error somewhere it returns 1
