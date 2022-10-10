@@ -14,7 +14,7 @@ def telnet():
     backend = "{echo -e '\02~NH02';}  | timeout --signal=9 " + timeout + " telnet " + ip + " " + str(backend_port) + " | " \
                                                                                                         "(set -o pipefail && tee -a log.txt) | grep -c Connected"
 
-    rbdd = subprocess.Popen(bdd.split(), stdout=subprocess.PIPE)
+    rbdd = subprocess.Popen(bdd.split(), stdout=subprocess.PIPE, shell=True)
 
     # reverse up and down value on linux
     up_value = 0
@@ -32,7 +32,7 @@ def telnet():
         print("Database return value : " + str(rbdd))
         print("Database port is not responding. MongoDB is probably DOWN !")
 
-    rfrontend = subprocess.Popen(frontend.split(), stdout=subprocess.PIPE)
+    rfrontend = subprocess.Popen(frontend.split(), stdout=subprocess.PIPE, shell=True)
 
     if rfrontend is up_value:
         print("Frontend return value : " + str(rfrontend))
@@ -46,7 +46,7 @@ def telnet():
         print("Frontend return value : " + str(rfrontend))
         print("Frontend port is not responding. Frontend is probably DOWN !")
 
-    rbackend = subprocess.Popen(backend.split(), stdout=subprocess.PIPE)
+    rbackend = subprocess.Popen(backend.split(), stdout=subprocess.PIPE, shell=True)
 
 
     if rbackend is up_value:
