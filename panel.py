@@ -7,6 +7,7 @@ import subprocess
 import gpio
 from config import ip, port, add, pi, time_before_update
 from ping import ping
+from telnet import telnet
 
 # TODO: replace with host VPN IP adress and Mongodb port when on RP
 client = MongoClient(add)
@@ -24,9 +25,7 @@ print("Python app running\n"
 
 # init bash command for hdmi control
 bashCommand = ["xset -display :0 dpms force off", "xset -display :0 dpms force on",
-               "cat /sys/class/thermal/thermal_zone0/temp"]
-# bashCommand = ["ls", "ls", "ls"]
-
+               "cat /sys/class/thermal/thermal_zone0/temp", "sleep 15"]
 
 # initialisation du PANEL pour post
 PANEL = {"isOpen": False,
@@ -50,19 +49,27 @@ while (1):
     current_time = now.strftime("%H:%M:%S")
 
     # to handle disconnection with server
-    resp = ping(ip)
-    while resp:
-        resp = ping(ip)
-        print(resp)
-        if resp and not hasBeenDisconnected:
+    ping_value = ping(ip)
+    telnet_value = telnet()
+    while ping_value or telnet_value:
+        print(ping_value)
+        if (ping_value or telnet_value) and not hasBeenDisconnected:
             print('### DISCONNECTED FROM SERVER ###')
             print('### DISABLING SCREEN DISPLAY ###')
             process = subprocess.Popen(bashCommand[0].split(), stdout=subprocess.PIPE)
             output, error = process.communicate()
             hasBeenDisconnected = True
-        elif not resp and hasBeenDisconnected:
+            print('put request successful')
+        elif not (ping_value and telnet_value) and hasBeenDisconnected:
             print('### RECONNECTED TO SERVER ###')
+            panelLogs, instructions, panels = db.panellogs, Instructions(db.instructions.find()), db.panels.find()
             hasBeenDisconnected = False
+            updatedInstructions = db["instructions"].find_one_and_update({"_id": ObjectId(instructions[pi]["_id"])},
+                                                                         {"$set":
+                                                                              {'instruction': False}
+                                                                          })
+        ping_value = ping(ip)
+        telnet_value = telnet()
 
     # collection fetching
     panelLogs, instructions, panels = db.panellogs, Instructions(db.instructions.find()), db.panels.find()
@@ -73,15 +80,21 @@ while (1):
 
     # fetching instructions into a class
     # getting panel measures
-    # TODO: functions to get measures from panel instruments
-    #
     # Temp function
     process = subprocess.Popen(bashCommand[2].split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     print("temperature fetched")
     temperature = int(output) / 1000
 
-    door_1, door_2, online = gpio.update_input()
+    # fetching input from gpio ports
+    door_1, door_2, online, button = gpio.update_input()
+
+    # if test button on, force screen display for 15 seconds
+    if button:
+        turn_on_display = subprocess.Popen(bashCommand[1].split(), stdout=subprocess.PIPE)
+        sleep_fifteen = subprocess.Popen(bashCommand[3].split(), stdout=subprocess.PIPE)
+        turn_off_display = subprocess.Popen(bashCommand[0].split(), stdout=subprocess.PIPE)
+
     # printing results
     print("Door 1 :", door_1)
     print("Door 2 :", door_2)
@@ -93,9 +106,8 @@ while (1):
     else:
         bug = False
 
-
     # put request to panel state
-    if not ping(ip):
+    if not (ping(ip) or telnet()):
         print('put request to panels collection')
         putPANEL = db["panels"].find_one_and_update(
             {"_id": ObjectId(panels[pi]['_id'])},
@@ -130,7 +142,8 @@ while (1):
                      "temperature": putPANEL['temperature'],
                      "index": putPANEL['index'],
                      "date": datetime.datetime.utcnow()}
-            postPANEL = panelLogs.insert_one(PANEL).inserted_id
+            if not (ping(ip) or telnet()):
+                postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
             # last log
@@ -157,7 +170,8 @@ while (1):
                      "temperature": putPANEL['temperature'],
                      "index": putPANEL['index'],
                      "date": datetime.datetime.utcnow()}
-            postPANEL = panelLogs.insert_one(PANEL).inserted_id
+            if not (ping(ip) or telnet()):
+                postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
             # last log
@@ -188,4 +202,3 @@ while (1):
                  "temperature": putPANEL['temperature'],
                  "index": putPANEL['index'],
                  "date": datetime.datetime.utcnow()}
-
