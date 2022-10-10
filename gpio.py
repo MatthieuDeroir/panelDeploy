@@ -19,7 +19,7 @@ def update_input():
     door_1_status = GPIO.input(indexes['door_1'])
     door_2_status = GPIO.input(indexes['door_2'])
     screen_status = GPIO.input(indexes['screen'])
-    button_status = GPIO.input(indexes[''])
+    button_status = GPIO.input(indexes['button'])
     return door_1_status, door_2_status, screen_status
 
 
