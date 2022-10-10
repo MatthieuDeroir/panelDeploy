@@ -1,6 +1,6 @@
 # MAIN LOOP CONFIG #
 # Panel Index : 0 for Indret, 1 fort UB Aval, 2 for UB Amont
-pi = 0
+pi = 1
 
 # VM IP
 ip = '10.50.57.26'
@@ -21,7 +21,7 @@ add = 'mongodb://' + ip + ':' + str(port) + '/'
 time_before_update = 1
 
 # Time before port check timeout
-timeout = 5
+timeout = '5'
 
 # GPIO CONFIG #
 # GPIO indexes
