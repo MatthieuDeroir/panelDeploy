@@ -19,6 +19,8 @@ def telnet():
     # replace os.system by subprocess.call on linux
     rbdd = os.system(bdd)
 
+    print("ok")
+
     # reverse up and down value on linux
     up_value = 0
     down_value = 1
