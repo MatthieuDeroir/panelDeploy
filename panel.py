@@ -61,7 +61,7 @@ while (1):
     # to handle disconnection with server
     ping_value = ping(ip)
     telnet_value = telnet()
-    while ping_value or not telnet_value:
+    while ping_value or telnet_value:
         ping_value = ping(ip)
         telnet_value = telnet()
         print(ping_value)
@@ -118,7 +118,7 @@ while (1):
         bug = False
 
     # put request to panel state
-    if not ping_value or telnet_value:
+    if not ping_value or not telnet_value:
         print('put request to panels collection')
         putPANEL = db["panels"].find_one_and_update(
             {"_id": ObjectId(panels[pi]['_id'])},
@@ -153,7 +153,7 @@ while (1):
                      "temperature": putPANEL['temperature'],
                      "index": putPANEL['index'],
                      "date": datetime.datetime.utcnow()}
-            if not ping_value or telnet_value:
+            if not ping_value or not telnet_value:
                 postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
@@ -181,7 +181,7 @@ while (1):
                      "temperature": putPANEL['temperature'],
                      "index": putPANEL['index'],
                      "date": datetime.datetime.utcnow()}
-            if not ping_value or telnet_value:
+            if not ping_value or not telnet_value:
                 postPANEL = panelLogs.insert_one(PANEL).inserted_id
             # changing LED states
             gpio.change_output(status)
