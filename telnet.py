@@ -1,8 +1,5 @@
 import subprocess, os
-from config import port, backend_port, frontend_port, shebang
-
-ip = 'localhost'
-timeout = '5'
+from config import port, backend_port, ip, timeout, frontend_port, shebang
 
 
 def telnet():
@@ -68,6 +65,3 @@ def telnet():
 
     # if any of the return value is 1 meaning there is an error somewhere it returns 1
     return error
-
-
-telnet()
