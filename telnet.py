@@ -70,4 +70,7 @@ def telnet():
     print(error)
 
     # if any of the return value is 1 meaning there is an error somewhere it returns 1
-    return not error
+    if error == 1:
+        return 1
+    elif error == 0:
+        return 0
