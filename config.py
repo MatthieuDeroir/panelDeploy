@@ -3,7 +3,7 @@
 pi = 1
 
 # VM IP
-ip = '192.168.100.81'
+ip = '10.50.57.26'
 
 # Database or API port
 port = 27017
