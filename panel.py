@@ -61,7 +61,9 @@ while (1):
     # to handle disconnection with server
     ping_value = ping(ip)
     telnet_value = telnet()
-    while telnet_value or ping_value:
+    print("PING VALUE :", ping_value)
+    print("TELNET VALUE :", telnet_value)
+    while telnet_value == 1 or ping_value == 1:
         ping_value = ping(ip)
         telnet_value = telnet()
         print(ping_value)
