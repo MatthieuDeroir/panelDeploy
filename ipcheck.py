@@ -4,7 +4,6 @@ from pymongo import MongoClient
 from bson import ObjectId
 from config import ipIndret, ipAval, ipAmont, add
 
-
 sleep_time = 1
 client = MongoClient(add)
 # database connexion

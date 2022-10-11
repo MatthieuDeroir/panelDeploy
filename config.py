@@ -18,10 +18,13 @@ backend_port = 4000
 add = 'mongodb://' + ip + ':' + str(port) + '/'
 
 # Loop refresh rate
-time_before_update = 10
+time_before_update = 1
 
 # Time before port check timeout
 timeout = '5'
+
+# Temperature Threshold
+max_temp = 90
 
 # GPIO CONFIG #
 # GPIO indexes
@@ -50,6 +53,4 @@ ipAmont = '10.190.61.21'
 panelAmont = '10.190.61.20'
 routerAmont = '10.190.61.9'
 
-#! SHEBANG
-shebang = "#!/bin/bash"
 

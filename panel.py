@@ -5,7 +5,7 @@ from time import sleep
 import datetime
 import subprocess
 import gpio
-from config import ip, port, add, pi, time_before_update
+from config import ip, port, add, pi, time_before_update, max_temp
 from ping import ping
 from telnet import telnet
 
@@ -114,7 +114,7 @@ while (1):
     print("Power :", online)
 
     # checking if anything goes wrong
-    if not (online) or (temperature >= 80):
+    if not (online) or (temperature >= max_temp):
         bug = True
     else:
         bug = False
