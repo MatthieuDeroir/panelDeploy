@@ -67,14 +67,14 @@ while (1):
         ping_value = ping(ip)
         telnet_value = telnet()
         print(ping_value)
-        if (ping_value or not telnet_value) and not hasBeenDisconnected:
+        if (ping_value or telnet_value) and not hasBeenDisconnected:
             print('### DISCONNECTED FROM SERVER ###')
             print('### DISABLING SCREEN DISPLAY ###')
             process = subprocess.Popen(bashCommand[0].split(), stdout=subprocess.PIPE)
             output, error = process.communicate()
             hasBeenDisconnected = True
             print('put request successful')
-        elif not (ping_value and not telnet_value) and hasBeenDisconnected:
+        elif not (ping_value and telnet_value) and hasBeenDisconnected:
             print('### RECONNECTED TO SERVER ###')
             inst = db.instructions.find()
             hasBeenDisconnected = False
@@ -82,6 +82,7 @@ while (1):
                                                                       {"$set":
                                                                            {'instruction': False}
                                                                        })
+        sleep(time_before_update)
 
     # collection fetching
     if ping_value == 0 and telnet_value == 0:
