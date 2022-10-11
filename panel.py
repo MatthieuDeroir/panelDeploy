@@ -39,13 +39,13 @@ PANEL = {"isOpen": False,
 
 putPANEL = {"door_1": False,
             "door_2": False,
-         "name": "Init",
-         "screen": True,
-         "online": False,
-         "state": False,
-         "temperature": 0,
-         "index": 0,
-         "date": datetime.datetime.utcnow()}
+            "name": "Init",
+            "screen": True,
+            "online": False,
+            "state": False,
+            "temperature": 0,
+            "index": 0,
+            "date": datetime.datetime.utcnow()}
 
 hasBeenDisconnected = False
 bug = False
@@ -61,7 +61,7 @@ while (1):
     # to handle disconnection with server
     ping_value = ping(ip)
     telnet_value = telnet()
-    while ping_value or telnet_value:
+    while telnet_value or ping_value:
         ping_value = ping(ip)
         telnet_value = telnet()
         print(ping_value)
@@ -77,17 +77,16 @@ while (1):
             inst = db.instructions.find()
             hasBeenDisconnected = False
             updatedInstructions = db.instructions.find_one_and_update({"_id": ObjectId(inst[pi]["_id"])},
-                                                                         {"$set":
-                                                                              {'instruction': False}
-                                                                          })
-
+                                                                      {"$set":
+                                                                           {'instruction': False}
+                                                                       })
 
     # collection fetching
-    panelLogs, instructions, panels = db.panellogs, Instructions(db.instructions.find()), db.panels.find()
-
-    print(panelLogs)
-    print(instructions)
-    print(panels)
+    if ping_value == 0 and telnet_value == 0:
+        panelLogs, instructions, panels = db.panellogs, Instructions(db.instructions.find()), db.panels.find()
+        print(panelLogs)
+        print(instructions)
+        print(panels)
 
     # fetching instructions into a class
     # getting panel measures
@@ -118,21 +117,24 @@ while (1):
         bug = False
 
     # put request to panel state
-    if not ping_value and not telnet_value:
+    if ping_value == 0 and telnet_value == 0:
         print('put request to panels collection')
-        putPANEL = db["panels"].find_one_and_update(
-            {"_id": ObjectId(panels[pi]['_id'])},
-            {"$set":
-                 {'state': status,
-                  'temperature': temperature,
-                  'door_1': not door_1,
-                  'door_2': not door_2,
-                  'screen': online,
-                  'bug': bug,
-                  'date': current_time},
-             }, upsert=True
-        )
-        print('put request successful')
+        try:
+            putPANEL = db["panels"].find_one_and_update(
+                {"_id": ObjectId(panels[pi]['_id'])},
+                {"$set":
+                     {'state': status,
+                      'temperature': temperature,
+                      'door_1': not door_1,
+                      'door_2': not door_2,
+                      'screen': online,
+                      'bug': bug,
+                      'date': current_time},
+                 }, upsert=True
+            )
+            print('put request successful ???')
+        except error:
+            print(error)
 
     # applying instructions
     if (instructions.table[pi]['instruction'] != panels[pi]['state']):
@@ -154,7 +156,10 @@ while (1):
                      "index": putPANEL['index'],
                      "date": datetime.datetime.utcnow()}
             if not ping_value and not telnet_value:
-                postPANEL = panelLogs.insert_one(PANEL).inserted_id
+                try:
+                    postPANEL = panelLogs.insert_one(PANEL).inserted_id
+                except:
+                    print("error")
             # changing LED states
             gpio.change_output(status)
             # last log
@@ -182,7 +187,10 @@ while (1):
                      "index": putPANEL['index'],
                      "date": datetime.datetime.utcnow()}
             if not ping_value and not telnet_value:
-                postPANEL = panelLogs.insert_one(PANEL).inserted_id
+                try:
+                    postPANEL = panelLogs.insert_one(PANEL).inserted_id
+                except:
+                    print("error")
             # changing LED states
             gpio.change_output(status)
             # last log
